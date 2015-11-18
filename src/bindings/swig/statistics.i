@@ -2,21 +2,38 @@
 // statistics.i - SWIG interface
 //
 
-// %module statistics
+%module statistics
+
+// %include "infinint.i"
+%include "dar_types.i"
 
 %{
-#include "../config.h"
-#include "statistics.hpp"
-using namespace libdar;
+	#include "../config.h"
+	#include "statistics.hpp"
+	// using namespace libdar;
 %}
 
-%ignore *::operator=;
-%ignore *::operator++;
-%ignore *::operator--;
-%ignore *::operator[];
-%ignore *::operator==;
 
+namespace libdar {
+	// class statistics;
+	// class infinint;
 
-%include dar_types.i
+	// %exception statistics::~statistics {
+	// 	try {
+	// 		$action
+	// 	} catch () {
+	// 		PyErr_SetString(PyExc_RuntimeError, const_cast<char*>(e.what()));
+	// 		return NULL;
+	// 	}
+	// }
 
-%include "statistics.hpp"
+	class statistics
+    {
+    public:
+		statistics(bool lock = true);
+		statistics(const statistics & ref);
+		~statistics();
+	};
+}
+
+// %include "statistics.hpp"
