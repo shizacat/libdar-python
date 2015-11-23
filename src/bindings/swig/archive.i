@@ -26,6 +26,8 @@ namespace libdar {
 	public:	
 		archive_options_read();
 		~archive_options_read();
+
+		void set_crypto_pass(const secu_string & pass);
 	};
 
 	class archive_options_create : public on_pool
@@ -51,7 +53,7 @@ namespace libdar {
 		void set_ea_mask(const mask & ea_mask);
 		void set_execute(const std::string & execute);
 		// void set_crypto_algo(crypto_algo crypto);
-		// void set_crypto_pass(const secu_string & pass);
+		void set_crypto_pass(const secu_string & pass);
 		void set_crypto_size(U_32 crypto_size);
 		void set_gnupg_recipients(const std::vector<std::string> & gnupg_recipients);
 		void set_gnupg_signatories(const std::vector<std::string> & gnupg_signatories);
@@ -83,6 +85,9 @@ namespace libdar {
 		// // void set_entrepot(const entrepot & entr);
 		// // void set_fsa_scope(const fsa_scope & scope);
 		void set_multi_threaded(bool val);
+
+		bool get_info_details() const;
+		bool get_allow_over() const;
 	};
 
 	class archive_options_extract : public on_pool

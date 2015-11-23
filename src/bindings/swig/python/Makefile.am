@@ -15,13 +15,6 @@ else
 endif
 endif
 
-# swig -c++ -python -o libdar_wrap.cpp -I../../../libdar/ ../libdar.i
-
-# g++ -std=c++11 -fPIC -c libdar_wrap.cpp -I/usr/include/python2.7 -I../../../libdar/ -I../../../
-
-# g++ -std=c++11 -o _libdar.so libdar_wrap.o -lpython2.7 -L../../../libdar/.libs/ -ldar -shared
-
-
 BUILD_LIBDIR = ../../..
 SWIG_DEFDIR = ..
 SWIG_DEPS = 
@@ -35,19 +28,16 @@ SWIG_COMPFLAGS = $(SWIG_GENFLAGS) $(AX_SWIG_PYTHON_CPPFLAGS) $(AX_SWIG_PYTHON_LI
 
 all-local : _libdar.so
 
+
 libdar_wrap.cpp : $(SWIG_DEFDIR)/libdar.i $(SWIG_DEPS)
 	$(SWIG) $(AX_SWIG_PYTHON_OPT) $(SWIG_GENFLAGS) -o $@ $^
 
 libdar_wrap.o : libdar_wrap.cpp
 	g++ -std=c++11 -fPIC -c $< $(SWIG_GENFLAGS) $(PYTHON_CPPFLAGS)
 
-_libdar.so : libdar_wrap.o
+_libdar.so : libdar_wrap.o $(BUILD_LIBDIR)/libdar/.libs/statistics.o
 	g++ -shared -o $@ $^ -l$(MYLIB) $(PYTHON_LIBS) -L$(BUILD_LIBDIR)/libdar/.libs
 
-#statistics.o : statistics_wrap.cpp
-#	g++ -std=c++11 -fPIC -c $< $(SWIG_COMPFLAGS)
-#statistics_wrap.cpp : $(SWIG_DEFDIR)/statistics.i
-#	$(SWIG) $(AX_SWIG_PYTHON_OPT) $(SWIG_GENFLAGS) -o $@ $^
 
 clean-local:
 	rm -rf *.so *.o *.pyc libdar_wrap.cpp libdar.py

@@ -23,8 +23,11 @@
 
 
 #define EXCEPT_WRAP(e_n, e_str) \
-	*e_str = "[" + std::to_string(*e_n) + "]"+*e_str; \
-	SWIG_exception(SWIG_RuntimeError, e_str->c_str());
+	if ( *e_n != 0 ) { \
+		*e_str = "[" + std::to_string(*e_n) + "]"+*e_str; \
+		SWIG_exception_fail(SWIG_RuntimeError, e_str->c_str()); \
+	};
+
 
 %inline %{
 	libdar::user_interaction* CastToUser_iteraction(libdar::user_interaction_callback* base){
@@ -35,6 +38,7 @@
 		return (libdar::statistics*) NULL;
 	}
 %}
+
 
 namespace libdar
 {
@@ -52,17 +56,19 @@ namespace libdar
 		PyList_SetItem($result, 2, PyInt_FromLong(*$3));
 	}
 
-	extern void get_version(U_I & major, U_I & medium, U_I & minor, bool init_libgcrypt = true);    
+	extern void get_version(U_I & major, U_I & medium, U_I & minor, bool init_libgcrypt = true);
 
 	// ----------------------------------------------------
 
 	%typemap(argout) (U_I & major, U_I & medium, U_I & minor, U_16 & exception, std::string & except_msg){
-		$result = PyList_New(5);
+		$result = PyList_New(3);
 		PyList_SetItem($result, 0, PyInt_FromLong(*$1));
 		PyList_SetItem($result, 1, PyInt_FromLong(*$2));
 		PyList_SetItem($result, 2, PyInt_FromLong(*$3));
-		PyList_SetItem($result, 3, PyInt_FromLong(*$4));
-		PyList_SetItem($result, 4, PyUnicode_FromString($5->c_str()) );
+
+		EXCEPT_WRAP($4, $5)
+		// PyList_SetItem($result, 3, PyInt_FromLong(*$4));
+		// PyList_SetItem($result, 4, PyUnicode_FromString($5->c_str()) );
 	}
  
 	extern void get_version_noexcept(U_I & major, U_I & medium, U_I & minor, U_16 & exception, std::string & except_msg, bool init_libgcrypt = true);
@@ -70,11 +76,7 @@ namespace libdar
 	// ----------------------------------------------------  
 
 	%typemap(argout) (user_interaction & dialog, const path & chem, const std::string & basename, const std::string & extension, const archive_options_read & options, U_16 & exception, std::string & except_msg) {
-		PyObject *o = $result;
-		$result = PyList_New(3);
-		PyList_SetItem($result, 0, o);
-		PyList_SetItem($result, 1, PyInt_FromLong(*$6));
-		PyList_SetItem($result, 2, PyUnicode_FromString($7->c_str()) );
+		EXCEPT_WRAP($6, $7)
 	}
 
 	extern archive* open_archive_noexcept(user_interaction & dialog,
@@ -97,11 +99,13 @@ namespace libdar
 			U_16 & exception,
 			std::string & except_msg) {
 
-		PyObject *o = $result;
-		$result = PyList_New(3);
-		PyList_SetItem($result, 0, o);
-		PyList_SetItem($result, 1, PyInt_FromLong(*$8));
-		PyList_SetItem($result, 2, PyUnicode_FromString($9->c_str()) );
+		// PyObject *o = $result;
+		// $result = PyList_New(3);
+		// PyList_SetItem($result, 0, o);
+		// PyList_SetItem($result, 1, PyInt_FromLong(*$8));
+		// PyList_SetItem($result, 2, PyUnicode_FromString($9->c_str()) );
+
+		EXCEPT_WRAP($8, $9)
 	}
 
 	// (arh_ptr, except, except_msg) = libdar.create_archive_noexcept(libdar.CastToUser_iteraction( u_i_cb ), libdar.path(''), libdar.path(''), '', '', libdar.archive_options_create(), libdar.statisticsNullPtr() )
@@ -129,6 +133,13 @@ namespace libdar
 	// 				   std::string & except_msg);
 
 	// ---------------------------------------------------- 
+
+	%typemap(argout) (archive *ptr,
+		U_16 & exception,
+		std::string & except_msg)
+	{
+		EXCEPT_WRAP($2, $3)
+	}
 
 	extern void close_archive_noexcept(archive *ptr,
 		U_16 & exception,
@@ -162,18 +173,9 @@ namespace libdar
 			U_16 & exception,
 			std::string & except_msg) 
 	{
-		if ( *$6 != 0 )
-		{
-			EXCEPT_WRAP($6,$7)
-			// *$7 = "[" + std::to_string(*$6) + "]"+*$7;
-			// SWIG_exception(SWIG_RuntimeError, $7->c_str());
-		}
+		EXCEPT_WRAP($6,$7)
 
 		// libdar::close_statistics_noexcept(result, *$6, *$7);
-
-		// if ( *$6 != 0 ) {
-		// 	EXCEPT_WRAP($6,$7)
-		// }
 
 		// Py_XDECREF($result);
 		// $result = SWIG_Py_Void();
@@ -185,7 +187,7 @@ namespace libdar
 		// PyList_SetItem($result, 2, PyUnicode_FromString($7->c_str()) );
 	}
 
-	%newobject op_extract_noexcept;
+	// %newobject op_extract_noexcept;
 	extern statistics* op_extract_noexcept(user_interaction & dialog,
 		archive *ptr,
 		const path &fs_root,
@@ -201,9 +203,10 @@ namespace libdar
 			const archive_options_listing & options,
 			U_16 & exception,
 			std::string & except_msg) {
-		$result = PyList_New(2);
-		PyList_SetItem($result, 0, PyInt_FromLong(*$4));
-		PyList_SetItem($result, 1, PyUnicode_FromString($5->c_str()) );
+		EXCEPT_WRAP($4,$5)
+		// $result = PyList_New(2);
+		// PyList_SetItem($result, 0, PyInt_FromLong(*$4));
+		// PyList_SetItem($result, 1, PyUnicode_FromString($5->c_str()) );
 	}
 
 	extern void op_listing_noexcept(user_interaction & dialog,
@@ -222,16 +225,11 @@ namespace libdar
 			U_16 & exception,
 			std::string & except_msg) 
 	{
-		if ( *$6 != 0 )
-		{
-			EXCEPT_WRAP($6,$7)
-		}
+		EXCEPT_WRAP($6,$7)
 
 		libdar::close_statistics_noexcept(result, *$6, *$7);
 
-		if ( *$6 != 0 ) {
-			EXCEPT_WRAP($6,$7)
-		}
+		EXCEPT_WRAP($6,$7)
 
 		Py_XDECREF($result);
 		$result = SWIG_Py_Void();
@@ -266,21 +264,3 @@ namespace libdar
 	%clear U_16& exception;
 	%clear std::string& except_msg;
 };
-
-//%include pointer.i
-
-//%include infinint.i
-
-//%{
-//#include "../config.h"
-//#include "libdar.hpp"
-//using namespace libdar;
-//%}
-
-//%include "libdar.hpp"
-
-//%include pointer.i
-
-
-//include statistics.i
-
