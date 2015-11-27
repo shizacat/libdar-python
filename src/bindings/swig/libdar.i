@@ -6,12 +6,13 @@
 
 %include "path.i"
 %include "user_interaction.i"
-// %include "infinint.i"
 %include "archive.i"
 %include "statistics.i"
 
+%include "infinint.i"
+
 %{
-	#include "../config.h"
+//	#include "../config.h"
 	#include "libdar.hpp"
 %}
 
@@ -108,7 +109,7 @@ namespace libdar
 		EXCEPT_WRAP($8, $9)
 	}
 
-	// (arh_ptr, except, except_msg) = libdar.create_archive_noexcept(libdar.CastToUser_iteraction( u_i_cb ), libdar.path(''), libdar.path(''), '', '', libdar.archive_options_create(), libdar.statisticsNullPtr() )
+	// arh_ptr = libdar.create_archive_noexcept(libdar.CastToUser_iteraction( u_i_cb ), libdar.path(''), libdar.path(''), '', '', libdar.archive_options_create(), libdar.statisticsNullPtr() )
 	extern archive *create_archive_noexcept(
 		user_interaction & dialog,
 		const path & fs_root,
@@ -122,15 +123,28 @@ namespace libdar
 
     // ---------------------------------------------------- 
 
- //     extern archive *merge_archive_noexcept(user_interaction & dialog,
-	// 				   const path & sauv_path,
-	// 				   archive *ref_arch1,
-	// 				   const std::string & filename,
-	// 				   const std::string & extension,
-	// 				   const archive_options_merge & options,
-	// 				   statistics * progressive_report,
-	// 				   U_16 & exception,
-	// 				   std::string & except_msg);
+	%typemap(argout) (user_interaction & dialog,
+			const path & sauv_path,
+			archive *ref_arch1,
+			const std::string & filename,
+			const std::string & extension,
+			const archive_options_merge & options,
+			statistics * progressive_report,
+			U_16 & exception,
+			std::string & except_msg) {
+
+		EXCEPT_WRAP($8, $9)
+	}
+
+	extern archive *merge_archive_noexcept(user_interaction & dialog,
+			const path & sauv_path,
+			archive *ref_arch1,
+			const std::string & filename,
+			const std::string & extension,
+			const archive_options_merge & options,
+			statistics * progressive_report,
+			U_16 & exception,
+			std::string & except_msg);
 
 	// ---------------------------------------------------- 
 
@@ -147,21 +161,21 @@ namespace libdar
 
 	// ---------------------------------------------------- 
 
-	%typemap(argout) (statistics* ptr,
-		U_16 & exception,
-		std::string & except_msg)
-	{
-		if ( $1 == nullptr )
-			Py_XDECREF(obj0);
+	// %typemap(argout) (statistics* ptr,
+	// 	U_16 & exception,
+	// 	std::string & except_msg)
+	// {
+	// 	if ( $1 == nullptr )
+	// 		Py_XDECREF(obj0);
 
-		$result = PyList_New(2);
-		PyList_SetItem($result, 0, PyInt_FromLong(*$2));
-		PyList_SetItem($result, 1, PyUnicode_FromString($3->c_str()) );
-	}
+	// 	$result = PyList_New(2);
+	// 	PyList_SetItem($result, 0, PyInt_FromLong(*$2));
+	// 	PyList_SetItem($result, 1, PyUnicode_FromString($3->c_str()) );
+	// }
 
-	extern void close_statistics_noexcept(statistics* ptr,
-		U_16 & exception,
-		std::string & except_msg);
+	// extern void close_statistics_noexcept(statistics* ptr,
+	// 	U_16 & exception,
+	// 	std::string & except_msg);
 
 	// ---------------------------------------------------- 
 
@@ -174,21 +188,10 @@ namespace libdar
 			std::string & except_msg) 
 	{
 		EXCEPT_WRAP($6,$7)
-
-		// libdar::close_statistics_noexcept(result, *$6, *$7);
-
-		// Py_XDECREF($result);
-		// $result = SWIG_Py_Void();
-
-		// PyObject *o = $result;
-		// $result = PyList_New(3);
-		// PyList_SetItem($result, 0, o);
-		// PyList_SetItem($result, 1, PyInt_FromLong(*$6));
-		// PyList_SetItem($result, 2, PyUnicode_FromString($7->c_str()) );
 	}
 
 	// %newobject op_extract_noexcept;
-	extern statistics* op_extract_noexcept(user_interaction & dialog,
+	extern statistics op_extract_noexcept(user_interaction & dialog,
 		archive *ptr,
 		const path &fs_root,
 		const archive_options_extract & options,
@@ -227,7 +230,7 @@ namespace libdar
 	{
 		EXCEPT_WRAP($6,$7)
 
-		libdar::close_statistics_noexcept(result, *$6, *$7);
+		// libdar::close_statistics_noexcept(result, *$6, *$7);
 
 		EXCEPT_WRAP($6,$7)
 
@@ -236,7 +239,7 @@ namespace libdar
 	}
 
 	// %newobject op_diff_noexcept;
-	extern statistics* op_diff_noexcept(user_interaction & dialog,
+	extern statistics op_diff_noexcept(user_interaction & dialog,
 			archive *ptr,
 			const path & fs_root,
 			const archive_options_diff & options,

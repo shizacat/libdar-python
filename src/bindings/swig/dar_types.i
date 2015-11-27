@@ -2,10 +2,13 @@
 // dar_types.i
 //
 
-namespace libdar {
-    // typedef unsigned int U_I;
-    // typedef unsigned short U_16;
 
+#pragma SWIG nowarn=401
+
+%ignore *::operator=;
+%ignore *::operator[];
+
+namespace libdar {
     #define LIBDAR_NO_EXCEPT 0
 
 	typedef unsigned char U_8;
@@ -19,8 +22,6 @@ namespace libdar {
 	typedef int64_t S_64;
 	typedef signed int S_I;
 
-	// enum endian { big_endian, little_endian, not_initialized };
-
 	enum compression
     {
 		none = 'n',  ///< no compression
@@ -30,10 +31,6 @@ namespace libdar {
 		xz = 'x'     ///< lzma compression
     };
 }
-
-%{
-	enum endian { big_endian, little_endian, not_initialized };
-%}
 
 // #ifndef OS_BITS
 // 	#if HAVE_INTTYPES_H

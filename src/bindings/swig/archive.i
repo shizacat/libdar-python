@@ -4,14 +4,24 @@
 
 %module archive
 
-%include "user_interaction.i"
-
 %{
 	#include "archive_options.hpp"
 	#include "archive.hpp"
 %}
 
+%include "user_interaction.i"
 %include "mask.i"
+
+// namespace libdar {
+// 	class catalogue;
+// 	class statistics;
+// 	class fsa_scope;
+// 	class entrepot;
+// 	class hash_algo;
+// }
+
+// %include "archive_options.hpp"
+// %include "archive.hpp"
 
 namespace libdar {
 
@@ -118,6 +128,14 @@ namespace libdar {
 		~archive_options_test();
 	};
 
+	class archive_options_merge : public on_pool
+    {
+    public:
+    	archive_options_merge();
+    	archive_options_merge(const archive_options_merge & ref);
+    	~archive_options_merge();
+    };
+
 	class archive : public on_pool{
 	public:
 		archive(user_interaction & dialog,
@@ -130,6 +148,3 @@ namespace libdar {
 		void op_listing(user_interaction & dialog, const archive_options_listing & options);
 	};
 }
-
-// %include "archive_options.hpp"
-// %include "archive.hpp"

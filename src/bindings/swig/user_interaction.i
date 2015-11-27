@@ -5,14 +5,13 @@
 %module user_interaction
 
 %{
-	#include "../config.h"
+//	#include "../config.h"
 	#include "user_interaction.hpp"
 %}
 
 %include "std_string.i"
 
 %include "secu_string.i"
-// %include "infinint.i"
 
 
 %{
@@ -80,8 +79,24 @@
 		return rst;
 	};
 
+	// python def x_string_cb(str, echo, context_value)
+	// return string
 	static libdar::secu_string x_secu_string_callback(const std::string &x, bool echo, void *context){
-		return NULL;
+		st_context_py_func *ct = (st_context_py_func *) context;
+
+		PyObject *func, *arglist;
+		PyObject *result;
+
+		func = (PyObject *) ct->f3;
+		arglist = Py_BuildValue("(OOO)", PyUnicode_FromString(x.c_str()), PyBool_FromLong(echo), (PyObject *) ct->context);
+		result = PyEval_CallObject(func, arglist);
+		Py_DECREF(arglist);
+
+		libdar::secu_string rst( PyUnicode_AsUTF8(result), strlen( PyUnicode_AsUTF8(result)) );
+
+		Py_XDECREF(result);
+
+		return rst;
 	};
 %}
 
@@ -89,7 +104,7 @@ namespace libdar {
 
 	class user_interaction;
 
-	%typemap(python, in) PyObject *pyfunc1, PyObject *pyfunc2, PyObject *pyfunc3, PyObject *pyfunc4 {
+	%typemap(in) PyObject *pyfunc1, PyObject *pyfunc2, PyObject *pyfunc3, PyObject *pyfunc4 {
 		if (!PyCallable_Check($input)) {
 			PyErr_SetString(PyExc_TypeError, "Need a callable object!");
 			return NULL;
@@ -144,76 +159,8 @@ namespace libdar {
 				  secu_string (*x_secu_string_callback)(const std::string &x, bool echo, void *context),
 				  void *context_value);
 
-
-       	// void pause(const std::string & message);
-
 		std::string get_string(const std::string & message, bool echo);
 		    
 		secu_string get_secu_string(const std::string & message, bool echo);
-		    
-	 //        void listing(const std::string & flag,
-		// 	     const std::string & perm,
-		// 	     const std::string & uid,
-		// 	     const std::string & gid,
-		// 	     const std::string & size,
-		// 	     const std::string & date,
-		// 	     const std::string & filename,
-		// 	     bool is_dir,
-		// 	     bool has_children);
-
-		// void dar_manager_show_files(const std::string & filename,
-		// 			    bool available_data,
-		// 			    bool available_ea);
-
-		// void dar_manager_contents(U_I number,
-		// 			  const std::string & chemin,
-		// 			  const std::string & archive_name);
-
-		// void dar_manager_statistics(U_I number,
-		// 			    const infinint & data_count,
-		// 			    const infinint & total_data,
-		// 			    const infinint & ea_count,
-		// 			    const infinint & total_ea);
-
-		// void dar_manager_show_version(U_I number,
-		// 			      const std::string & data_date,
-		// 			      const std::string & data_presence,
-		// 			      const std::string & ea_date,
-		// 			      const std::string & ea_presence);
-
-	 //        void set_listing_callback(void (*callback)(const std::string & flag,
-		// 					   const std::string & perm,
-		// 					   const std::string & uid,
-		// 					   const std::string & gid,
-		// 					   const std::string & size,
-		// 					   const std::string & date,
-		// 					   const std::string & filename,
-		// 					   bool is_dir,
-		// 					   bool has_children,
-		// 					   void *context));
-
-		// void set_dar_manager_show_files_callback(void (*callback)(const std::string & filename,
-		// 							  bool available_data,
-		// 							  bool available_ea,
-		// 							  void *context));
-
-		// void set_dar_manager_contents_callback(void (*callback)(U_I number,
-		// 							const std::string & chemin,
-		// 							const std::string & archive_name,
-		// 							void *context));
-
-		// void set_dar_manager_statistics_callback(void (*callback)(U_I number,
-		// 	const infinint & data_count,
-		// 	const infinint & total_data,
-		// 	const infinint & ea_count,
-		// 	const infinint & total_ea,
-		// 	void *context));
-
-		// void set_dar_manager_show_version_callback(void (*callback)(U_I number,
-		// 	const std::string & data_date,
-		// 	const std::string & data_presence,
-		// 	const std::string & ea_date,
-		// 	const std::string & ea_presence,
-		// 	void *context));
 	};
 }
