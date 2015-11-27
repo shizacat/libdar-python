@@ -1,0 +1,5 @@
+if HAVE_SWIG
+    OPT_SUBDIR = src
+endif
+
+SUBDIRS = $(OPT_SUBDIR)
