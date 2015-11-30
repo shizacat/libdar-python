@@ -3,23 +3,23 @@
 #
 
 if BUILD_MODE32
-    MYLIB=dar32
-    AM_CPPFLAGS=-DLIBDAR_MODE=32 -I../../../libdar $(AX_SWIG_PYTHON_CPPFLAGS)
+    MYLIB=libdar.la
+    AM_CPPFLAGS=-DLIBDAR_MODE=32 -I$(oldincludedir) $(AX_SWIG_PYTHON_CPPFLAGS)
 else
 if BUILD_MODE64
-    MYLIB=dar64
-    AM_CPPFLAGS=-DLIBDAR_MODE=64 -I../../../libdar $(AX_SWIG_PYTHON_CPPFLAGS)
+    MYLIB=libdar64.la
+    AM_CPPFLAGS=-DLIBDAR_MODE=64 -I$(oldincludedir) $(AX_SWIG_PYTHON_CPPFLAGS)
 else
-    MYLIB=dar
-    AM_CPPFLAGS=-I../../../libdar $(AX_SWIG_PYTHON_CPPFLAGS)
+    MYLIB=libdar.la
+    AM_CPPFLAGS=-I$(oldincludedir) $(AX_SWIG_PYTHON_CPPFLAGS)
 endif
 endif
 
 
 if HAVE_SWIG
 
-BUILD_LIBDIR = ../../..
-SWIG_GENFLAGS = -I$(BUILD_LIBDIR)/libdar -I$(BUILD_LIBDIR) -I..
+BUILD_LIBDIR =
+SWIG_GENFLAGS =
 
 BUILT_SOURCES = libdar_wrap.cpp
 SWIG_SOURCES = ../libdar.i
@@ -43,7 +43,8 @@ libdar_PYTHON = __init__.py libdar.py
 
 libdar_LTLIBRARIES = _libdar.la
 nodist__libdar_la_SOURCES = libdar_wrap.cpp $(SWIG_SOURCES)
-_libdar_la_LIBADD = $(top_builddir)/src/libdar/lib$(MYLIB).la
+#_libdar_la_LIBADD = $(top_builddir)/src/libdar/$(MYLIB)
+_libdar_la_LIBADD = /usr/lib/$(MYLIB)
 _libdar_la_LDFLAGS = $(PYTHON_LDFLAGS) -avoid-version -module
 #_libdar_la_CFLAGS = $(PYTHON_CPPFLAGS) -I$(top_builddir)/src
 libdardir = $(pyexecdir)/libdar
