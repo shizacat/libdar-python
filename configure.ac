@@ -19,14 +19,17 @@ AX_SWIG_PYTHON
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_LIBTOOL
-#AX_CXX_COMPILE_STDCXX_11
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+AX_CXX_COMPILE_STDCXX([11], [noext])
 
-AX_CXX_COMPILE_STDCXX(11)
+AC_DEFINE(_DARWIN_C_SOURCE, 1, [Define on Darwin to activate all library features])
 
 # Checks for libraries.
 PKG_CHECK_MODULES(libdar64, libdar64 >= 4.8.0)
 
 # Checks for header files.
+AC_HEADER_STDC
 AC_CHECK_HEADERS([dar/libdar.hpp])
 
 # Checks for typedefs, structures, and compiler characteristics.
