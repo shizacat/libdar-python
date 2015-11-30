@@ -6,7 +6,7 @@
 
 %{
 //	#include "../config.h"
-	#include "statistics.hpp"
+	#include "dar/statistics.hpp"
 %}
 
 %include "dar_types.i"
@@ -15,4 +15,4 @@ namespace libdar {
 	class infinint;
 }
 
-%include "statistics.hpp"
+%include "dar/statistics.hpp"

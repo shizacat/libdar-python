@@ -6,7 +6,7 @@
 
 %{
 //	#include "../config.h"
-	#include "secu_string.hpp"
+	#include "dar/secu_string.hpp"
 %}
 
 %include "dar_types.i"
@@ -14,4 +14,4 @@
 %include "std_string.i"
 
 
-%include "secu_string.hpp"
+%include "dar/secu_string.hpp"

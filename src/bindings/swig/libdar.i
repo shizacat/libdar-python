@@ -13,7 +13,7 @@
 
 %{
 //	#include "../config.h"
-	#include "libdar.hpp"
+	#include "dar/libdar.hpp"
 %}
 
 %include "typemaps.i"

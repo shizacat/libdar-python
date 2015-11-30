@@ -5,9 +5,9 @@
 %module infinint
 %{
 //	#include "../config.h"
-	#include "infinint.hpp"
+	#include "dar/infinint.hpp"
 %}
 
 %include "dar_types.i"
 
-%include "infinint.hpp"
+%include "dar/infinint.hpp"

@@ -6,11 +6,11 @@
 
 %{
 //	#include "../config.h"
-	#include "path.hpp"
+	#include "dar/path.hpp"
 %}
 
 %include "dar_types.i"
 
 %include "std_string.i"
 
-%include "path.hpp"
+%include "dar/path.hpp"

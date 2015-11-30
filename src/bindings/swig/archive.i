@@ -5,8 +5,8 @@
 %module archive
 
 %{
-	#include "archive_options.hpp"
-	#include "archive.hpp"
+	#include "dar/archive_options.hpp"
+	#include "dar/archive.hpp"
 %}
 
 %include "user_interaction.i"
@@ -52,9 +52,9 @@ namespace libdar {
 		void set_allow_over(bool allow_over);
 		void set_warn_over(bool warn_over);
 		void set_info_details(bool info_details);
-		void set_display_treated(bool display_treated, bool only_dir);
+		//void set_display_treated(bool display_treated, bool only_dir);
 		void set_display_skipped(bool display_skipped);
-		void set_display_finished(bool display_finished);
+		//void set_display_finished(bool display_finished);
 		// // void set_pause(const infinint & pause);
 		void set_empty_dir(bool empty_dir);
 		void set_compression(compression compr_algo);
@@ -65,12 +65,12 @@ namespace libdar {
 		// void set_crypto_algo(crypto_algo crypto);
 		void set_crypto_pass(const secu_string & pass);
 		void set_crypto_size(U_32 crypto_size);
-		void set_gnupg_recipients(const std::vector<std::string> & gnupg_recipients);
-		void set_gnupg_signatories(const std::vector<std::string> & gnupg_signatories);
+		//void set_gnupg_recipients(const std::vector<std::string> & gnupg_recipients);
+		//void set_gnupg_signatories(const std::vector<std::string> & gnupg_signatories);
 		void set_compr_mask(const mask & compr_mask);
 		// // void set_min_compr_size(const infinint & min_compr_size);
 		void set_nodump(bool nodump);
-		void set_exclude_by_ea(const std::string & ea_name);
+		//void set_exclude_by_ea(const std::string & ea_name);
 		// // void set_what_to_check(cat_inode::comparison_fields what_to_check);
 		// // void set_hourshift(const infinint & hourshift);
 		void set_empty(bool empty);
@@ -94,7 +94,7 @@ namespace libdar {
 		void set_ignore_unknown_inode_type(bool val);
 		// // void set_entrepot(const entrepot & entr);
 		// // void set_fsa_scope(const fsa_scope & scope);
-		void set_multi_threaded(bool val);
+		//void set_multi_threaded(bool val);
 
 		bool get_info_details() const;
 		bool get_allow_over() const;

@@ -5,7 +5,7 @@
 %module mask
 
 %{
-	#include "mask.hpp"
+	#include "dar/mask.hpp"
 %}
 
-%include "mask.hpp"
+%include "dar/mask.hpp"

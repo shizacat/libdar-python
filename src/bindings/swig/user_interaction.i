@@ -6,7 +6,7 @@
 
 %{
 //	#include "../config.h"
-	#include "user_interaction.hpp"
+	#include "dar/user_interaction.hpp"
 %}
 
 %include "std_string.i"
