@@ -9,7 +9,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 # Scripting and Bindings languages
-AM_PATH_PYTHON(3)
+AM_PATH_PYTHON
 AX_PKG_SWIG(2.0, [], [ AC_MSG_ERROR([SWIG is required to build..]) ])
 AX_SWIG_ENABLE_CXX
 AX_SWIG_PYTHON
