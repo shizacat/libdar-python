@@ -36,8 +36,7 @@ EXTRA_DIST =                \
         __init__.py
 
 swigincludedir = $(includedir)/libdar/swig
-swiginclude_HEADERS = $(SWIG_SOURCES) 
-#../archive.i ../dar_types.i ../infinint.i ../mask.i ../path.i secu_string.i ../statistics.i ../user_interaction.i
+swiginclude_HEADERS = $(SWIG_SOURCES) ../archive.i ../dar_types.i ../user_interaction.i
 
 libdar_PYTHON = __init__.py libdar.py
 
