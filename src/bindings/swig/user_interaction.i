@@ -7,12 +7,13 @@
 %{
 //	#include "../config.h"
 	#include "dar/user_interaction.hpp"
+
+	#include "dar/secu_string.hpp"
 %}
 
 %include "std_string.i"
 
-%include "secu_string.i"
-
+%include "dar/secu_string.hpp"
 
 %{
 	struct st_context_py_func {

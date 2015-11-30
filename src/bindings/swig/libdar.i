@@ -4,24 +4,31 @@
 
 %module libdar
 
-%include "path.i"
-%include "user_interaction.i"
-%include "archive.i"
-%include "statistics.i"
-
-%include "infinint.i"
-
 %{
 //	#include "../config.h"
 	#include "dar/libdar.hpp"
+
+	#include "dar/path.hpp"
+	#include "dar/infinint.hpp"
+	#include "dar/statistics.hpp"
 %}
 
 %include "typemaps.i"
 %include "std_string.i"
 %include "exception.i" 
 
-%include "dar_types.i"
+namespace libdar {
+	class infinint;
+	class user_interaction;
+}
 
+%include "dar/path.hpp"
+%include "dar/infinint.hpp"
+%include "dar/statistics.hpp"
+
+%include "dar_types.i"
+%include "user_interaction.i"
+%include "archive.i"
 
 #define EXCEPT_WRAP(e_n, e_str) \
 	if ( *e_n != 0 ) { \

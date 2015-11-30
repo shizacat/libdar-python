@@ -7,10 +7,13 @@
 %{
 	#include "dar/archive_options.hpp"
 	#include "dar/archive.hpp"
+
+	#include "dar/mask.hpp"
 %}
 
+%include "dar/mask.hpp"
+
 %include "user_interaction.i"
-%include "mask.i"
 
 // namespace libdar {
 // 	class catalogue;
