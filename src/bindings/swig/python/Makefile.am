@@ -46,7 +46,7 @@ nodist__libdar_la_SOURCES = libdar_wrap.cpp $(SWIG_SOURCES)
 _libdar_la_LIBADD = /usr/lib/$(MYLIB)
 _libdar_la_LDFLAGS = $(PYTHON_LDFLAGS) -avoid-version -module
 #_libdar_la_CFLAGS = $(PYTHON_CPPFLAGS) -I$(top_builddir)/src
-libdardir = $(pyexecdir)/libdar
+libdardir = $(pythondir)/libdar
 
 libdar_wrap.cpp : $(SWIG_SOURCES)
 	$(SWIG) $(AX_SWIG_PYTHON_OPT) $(AM_CPPFLAGS) $(SWIG_GENFLAGS) -o $@ $<
