@@ -5,7 +5,7 @@
 %module user_interaction
 
 %{
-//	#include "../config.h"
+	// #include "../../../../config.h"
 	#include "dar/user_interaction.hpp"
 
 	#include "dar/secu_string.hpp"
@@ -73,7 +73,11 @@
 		result = PyEval_CallObject(func, arglist);
 		Py_DECREF(arglist);
 
-		std::string rst = PyUnicode_AsUTF8(result);
+		// #if (HAVE_PYTHON == '2.7')
+		// 	std::string rst = PyString_AS_STRING(result);
+		// #else
+			std::string rst = PyUnicode_AsUTF8(result);
+		// #endif
 
 		Py_XDECREF(result);
 
@@ -93,7 +97,11 @@
 		result = PyEval_CallObject(func, arglist);
 		Py_DECREF(arglist);
 
-		libdar::secu_string rst( PyUnicode_AsUTF8(result), strlen( PyUnicode_AsUTF8(result)) );
+		// #if (HAVE_PYTHON == '2.7')
+		// 	libdar::secu_string rst( PyString_AS_STRING(result), strlen( PyString_AS_STRING(result)) );
+		// #else
+			libdar::secu_string rst( PyUnicode_AsUTF8(result), strlen( PyUnicode_AsUTF8(result)) );
+		// #endif
 
 		Py_XDECREF(result);
 
