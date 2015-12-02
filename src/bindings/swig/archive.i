@@ -151,6 +151,13 @@ namespace libdar {
     	~archive_options_merge();
     };
 
+    class archive_options_isolate : public on_pool
+    {
+    public:
+    	archive_options_isolate();
+    	~archive_options_isolate();
+    };
+
 	class archive : public on_pool{
 	public:
 		archive(user_interaction & dialog,

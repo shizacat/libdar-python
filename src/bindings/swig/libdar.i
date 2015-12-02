@@ -143,6 +143,29 @@ namespace libdar
     // ---------------------------------------------------- 
 
 	%typemap(argout) (user_interaction & dialog,
+			const path &sauv_path,
+			archive *ref_arch,
+			const std::string & filename,
+			const std::string & extension,
+			const archive_options_isolate & options,
+			U_16 & exception,
+			std::string & except_msg)
+	{
+		EXCEPT_WRAP($7, $8)
+	}
+
+	extern archive *isolate_archive_noexcept(user_interaction & dialog,
+			const path &sauv_path,
+			archive *ref_arch,
+			const std::string & filename,
+			const std::string & extension,
+			const archive_options_isolate & options,
+			U_16 & exception,
+			std::string & except_msg);
+
+    // ---------------------------------------------------- 
+
+	%typemap(argout) (user_interaction & dialog,
 			const path & sauv_path,
 			archive *ref_arch1,
 			const std::string & filename,
@@ -266,13 +289,23 @@ namespace libdar
 			U_16 & exception,
 			std::string & except_msg);
 
-	// // ---------------------------------------------------- 
-	//     extern statistics op_test_noexcept(user_interaction & dialog,
-	// 			       archive *ptr,
-	// 			       const archive_options_test & options,
-	// 			       statistics * progressive_report,
-	// 			       U_16 & exception,
-	// 			       std::string & except_msg);
+	// ---------------------------------------------------- 
+	%typemap(argout) (user_interaction & dialog,
+			archive *ptr,
+			const archive_options_test & options,
+			statistics * progressive_report,
+			U_16 & exception,
+			std::string & except_msg)
+	{
+		EXCEPT_WRAP($5,$6)
+	}
+
+	extern statistics op_test_noexcept(user_interaction & dialog,
+			archive *ptr,
+			const archive_options_test & options,
+			statistics * progressive_report,
+			U_16 & exception,
+			std::string & except_msg);
 	
 	// // ---------------------------------------------------- 
 
